@@ -28,16 +28,17 @@
 
 </tr>
 
-
 <tr>
-  <td>EEQ</td>
-  <td>Noida:cd /servers/noivl-gmayank/gmayank/voltus/pgv_eeq/voltus_rak_1721/pgv_gen</br></br>
-../tcl/std_cells.tcl
+  <td>MIMCAP</td>
+  <td>PGV for Node 16</br></br>
 
+<b>Run directory</b>: /it/sjclapa06p6_scratch01/sappa/expire_2022_12_30/Sept_2022/mimcap_2020</br>
+<b>Script</b> : /it/sjclapa06p6_scratch01/sappa/expire_2022_12_30/Sept_2022/mimcap_2020/mh16mim_macro.tcl
   </td>
 
 
 </tr>
+
       <!--Basic code-->
       <tr>
         <td> Powergate/ HEADER SWITCH </td>
@@ -52,26 +53,19 @@ run.tcl
 </tr>
 
 <!--Nav Code-->
+
+
+
+
       <tr>
-        <td>Level Shifter</td>
-        <td>
+        <td>EEQ</td>
+        <td>Noida:cd /servers/noivl-gmayank/gmayank/voltus/pgv_eeq/voltus_rak_1721/pgv_gen</br></br>
+      ../tcl/std_cells.tcl
+
         </td>
 
 
       </tr>
-
-      <tr>
-        <td>MIMCAP</td>
-        <td>PGV for Node 16</br></br>
-
-<b>Run directory</b>: /it/sjclapa06p6_scratch01/sappa/expire_2022_12_30/Sept_2022/mimcap_2020</br>
-<b>Script</b> : /it/sjclapa06p6_scratch01/sappa/expire_2022_12_30/Sept_2022/mimcap_2020/mh16mim_macro.tcl
-        </td>
-
-
-      </tr>
-
-
 
 
     </table>
@@ -88,6 +82,14 @@ run.tcl
 
 </tr>
 
+<tr>
+  <td>Cell having more than 1 PG pin</td>
+  <td>
+
+  </td>
+</tr>
+
+
 
 <tr>
   <td>Event Based</td>
@@ -100,7 +102,7 @@ Check instance ref_clk__L1_I0</br>
   </td>
 </table>
 </br></br>
-<h2>Flow based</h2>
+<h2>Rail Analysis</h2>
 </br>
 
     <table>
@@ -115,8 +117,42 @@ Check instance ref_clk__L1_I0</br>
 
       <!--Basic code-->
       <tr>
-        <td> Macro </td>
-        <td>.....</td>
+        <td> Top-Block Correlation </td>
+        <td>
+<xmp>
+  top level
+cd /it/sjclapa06p6_scratch01/gmayank/voltus/cases/46629579_ir_top_block/top
+
+/it/sjclapa03s2_scratch01/gmayank/expire_2022_09_30/mayank_scratch/cases/top
+/icd/flow/SSV/SSV201/20.12-s086_1/lnx86/bin/voltus -64 -overwrite
+source variable_top.tcl
+source static_top.tcl
+load db
+report_power_rail_results -rlrp_inst FE_OFC1851_FE_OFN1273_ver_link_sif_o_4__45 -filename jj
+
+selectInst FE_OFC1851_FE_OFN1273_ver_link_sif_o_4__45
+voltus 15> zoomSelected
+remove power layer
+
+RLRP Path -trace
+
+report_instance_power black/manycore_pod/podrow/podrow/px_0__pod/south_vc_x_0__south_vc_row/vc_y_0__vc_x_2__vc/FE_OFC1851_FE_OFN1273_ver_link_sif_o_4__45
+
+==0.0038
+
+Block:
+
+Cd /it/sjclapa06p6_scratch01/gmayank/voltus/cases/46629579_ir_top_block/block_IR_testcase
+rm -rf dynVecLessPowerResults_mg
+rm -rf dynRailResults_mg
+rm -rf work/
+rm -rf voltus_scheduler.log
+/icd/flow/SSV/SSV201/20.12-s086_1/lnx86/bin/voltus -64 -overwrite
+source variable_block.tcl
+source static_block.tcl
+report_instance_power FE_OFC1851_FE_OFN1273_ver_link_sif_o_4__45
+</xmp>
+        </td>
 
 
 </tr>
